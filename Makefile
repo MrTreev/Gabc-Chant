@@ -27,11 +27,14 @@ all: ${PDF_FILES}
 
 .PHONY: clean
 clean:
-	$(shell find -type f \
-		-name '*.glog' \
-		-name '*.gtex' \
-		-name '*.aux' \
-		-name '*.gaux' \
-		-name '*.log' \
-		-name '*.pdf' \
+	rm $(shell \
+		find -type f \
+		-and \( \
+			-name '*.glog' -or \
+			-name '*.gtex' -or \
+			-name '*.aux' -or \
+			-name '*.gaux' -or \
+			-name '*.log' -or \
+			-name '*.pdf' \
+		\) \
 	)
