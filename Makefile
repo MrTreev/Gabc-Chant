@@ -45,3 +45,15 @@ clean:
 			-name '*.log' -or \
 			-name '*.pdf' \
 		\) -delete
+
+
+.PHONY: clear
+clear:
+	find -type f \
+		-and \( \
+			-name '*.aux' -or \
+			-name '*.gaux' -or \
+			-name '*.glog' -or \
+			-name '*.gtex' -or \
+			-name '*.log' \
+		\) -delete
