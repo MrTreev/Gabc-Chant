@@ -29,7 +29,7 @@ pdfs: ${PDF_FILES}
 %.tex: make/textemplate
 	sed "s/TEMPLATESTRING/$(basename $(notdir $@))/" $< > $@
 
-%.pdf: %.tex
+%.pdf: %.tex %.gabc
 	cd $(dir $@)
 	${LATEX} --shell-escape $(notdir $<)
 	cd -
