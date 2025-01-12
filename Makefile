@@ -12,15 +12,26 @@ default: all
 
 all: ${PDF_FILES}
 
-%.gtex: %.gabc
-	cd $(dir $@)
-	gregorio --verbose $(notdir $<) --output-file $(notdir $@)
-	cd -
+# %.gtex: %.gabc
+# 	cd $(dir $@)
+# 	gregorio --verbose $(notdir $<) --output-file $(notdir $@)
+# 	cd -
 
-%.tex: %.gabc
-	sed "s/TEMPLATESTRING/$(basename $(notdir $@))/" make/template.tex > $@
+%.tex: make/textemplate
+	sed "s/TEMPLATESTRING/$(basename $(notdir $@))/" $< > $@
 
-%.pdf: %.tex | %.gtex
+%.pdf: %.tex
 	cd $(dir $@)
 	${LATEX} --shell-escape $(notdir $<)
 	cd -
+
+.PHONY: clean
+clean:
+	$(shell find -type f \
+		-name '*.glog' \
+		-name '*.gtex' \
+		-name '*.aux' \
+		-name '*.gaux' \
+		-name '*.log' \
+		-name '*.pdf' \
+	)

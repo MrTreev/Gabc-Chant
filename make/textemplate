@@ -1,7 +1,5 @@
-\documentclass[11pt]{article}
-
+\documentclass[a4paper,12pt]{article}
 \usepackage{fontspec}
-
 \usepackage[autocompile]{gregoriotex}
 
 \begin{document}
