@@ -6,16 +6,25 @@ MAKEFLAGS	+= --warn-undefined-variables
 MAKEFLAGS	+= --no-builtin-rules
 LATEX		?=	lualatex
 
-PDF_FILES	:=	$(patsubst %.gabc,%.pdf,$(shell find -type f -name '*.gabc'))
+GABC_FILES	:=	$(shell find -type f -name '*.gabc')
+PDF_FILES	:=	$(patsubst %.gabc,%.pdf,${GABC_FILES})
+GTEX_FILES	:=	$(patsubst %.gabc,%.gtex,${GABC_FILES})
 
 default: all
 
-all: ${PDF_FILES}
+.PHONY: all
+all: pdfs
 
-# %.gtex: %.gabc
-# 	cd $(dir $@)
-# 	gregorio --verbose $(notdir $<) --output-file $(notdir $@)
-# 	cd -
+.PHONY: gtex
+gtex: ${GTEX_FILES}
+
+.PHONY: pdfs
+pdfs: ${PDF_FILES}
+
+%.gtex: %.gabc
+	cd $(dir $@)
+	gregorio --verbose $(notdir $<) --output-file $(notdir $@)
+	cd -
 
 %.tex: make/textemplate
 	sed "s/TEMPLATESTRING/$(basename $(notdir $@))/" $< > $@
@@ -27,14 +36,12 @@ all: ${PDF_FILES}
 
 .PHONY: clean
 clean:
-	rm $(shell \
-		find -type f \
+	find -type f \
 		-and \( \
-			-name '*.glog' -or \
-			-name '*.gtex' -or \
 			-name '*.aux' -or \
 			-name '*.gaux' -or \
+			-name '*.glog' -or \
+			-name '*.gtex' -or \
 			-name '*.log' -or \
 			-name '*.pdf' \
-		\) \
-	)
+		\) -delete
